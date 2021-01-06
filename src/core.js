@@ -42,10 +42,14 @@ function _deepObjectTraverse(target, path, create = true) {
 		if (!_isObject(target[step])) {
 			if (create) target[step] = {};
 			else return undefined;
-		}
+		} else if (isPrototypePolluted(step)) continue;
 		target = target[step];
 	}
 	return target;
+}
+
+function isPrototypePolluted(key) {
+    return ['__proto__', 'constructor', 'prototype'].includes(key);
 }
 
 module.exports = {
